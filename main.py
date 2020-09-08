@@ -1,3 +1,5 @@
+import shutil
+
 from power_point_builder import to_power_point
 from video_extract import extract_video_frame, extract_images_for_frame
 
@@ -22,3 +24,4 @@ if __name__ == '__main__':
 
     extract_images_for_frame(video, out_dir)
     to_power_point(out_dir)
+    shutil.rmtree(out_dir)
