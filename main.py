@@ -11,6 +11,8 @@ from functools import reduce
 
 from pptx import Presentation
 
+from video_extract import extract_video_frame, extract_images_for_frame
+
 
 def get_page(url):
     import urllib3
@@ -21,16 +23,7 @@ def get_page(url):
 
     return None
 
-# this was found on some stackoverflow
-def are_image_same(file1, file2):
-    image1 = Image.open(file1)
-    image2 = Image.open(file2)
 
-    h1 = image1.histogram()
-    h2 = image2.histogram()
-    rms = math.sqrt(reduce(operator.add, list(map(lambda a,b: (a-b)**2, h1, h2)))/len(h1))
-
-    return rms == 0
 
 
 def to_power_point(img_folder):
@@ -53,36 +46,6 @@ if __name__ == '__main__':
 
     video = "C:/Users/naked_000/Desktop/video(1).mp4"
     out_dir = "./out"
-    if not os.path.exists("decomp"):
-        os.mkdir("decomp")
-    else:
-        sys.exit("decomp already exists, exit")
 
-    if not os.path.exists(out_dir):
-        os.mkdir(out_dir)
-
-    cmd = ["ffmpeg", "-i", video, "-vf", "select='eq(pict_type,I)'", "-vsync", "0", "-f", "image2",
-           "decomp/%09d.png"]
-
-    print(("Running ffmpeg: " + " ".join(cmd)))
-
-
-    subprocess.call(cmd)
-
-    print("Done, now eliminating duplicate images and moving unique ones to output folder...")
-
-    filelist = glob.glob(os.path.join("decomp", '*.png'))
-    filelist.sort()
-    for ii in range(0, len(filelist)):
-        if ii < len(filelist) - 1:
-            if are_image_same(filelist[ii], filelist[ii + 1]):
-                print(('Found similar images: ' + filelist[ii] + " and " + filelist[ii + 1]))
-            else:
-                print(('Found unique image: ' + filelist[ii]))
-                head, tail = os.path.split(filelist[ii])
-                shutil.copyfile(filelist[ii], out_dir + os.path.sep + tail)
-        else:
-            shutil.copyfile(filelist[ii], out_dir + os.path.sep + tail)
-    shutil.rmtree("decomp")
-
+    extract_images_for_frame(video, out_dir)
     to_power_point(out_dir)
