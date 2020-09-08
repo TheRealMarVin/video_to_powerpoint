@@ -1,0 +1,1 @@
+This project is used to convert video to powerpoint presentation. It will extract every frame of the video and compare them to the next frame. If the image is different both are kept for the powerpoint presentation. This was good for videos that present slides and you would like to follow with the slide and take notes.
