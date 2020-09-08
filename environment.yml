@@ -1,0 +1,49 @@
+name: video_out
+channels:
+  - anaconda
+  - menpo
+  - conda-forge
+  - defaults
+dependencies:
+  - brotlipy=0.7.0=py38h1e8a9f7_1000
+  - ca-certificates=2020.6.20=hecda079_0
+  - certifi=2020.6.20=py38h32f6830_0
+  - cffi=1.14.1=py38hba49e27_0
+  - cryptography=3.1=py38hba49e27_0
+  - ffmpeg=2.7.0=0
+  - freetype=2.10.2=hd328e21_0
+  - idna=2.10=pyh9f0ad1d_0
+  - jpeg=9b=vc14h4d7706e_1
+  - libiconv=1.16=he774522_0
+  - libpng=1.6.37=h2a8f88b_0
+  - libtiff=4.1.0=h56a325e_1
+  - libxml2=2.9.10=h1006b36_2
+  - libxslt=1.1.33=h579f668_1
+  - lxml=4.5.2=py38he3d0fc9_0
+  - lz4-c=1.9.2=h62dcd97_1
+  - olefile=0.46=py_0
+  - openssl=1.1.1g=he774522_1
+  - pillow=7.2.0=py38hcc1f983_0
+  - pip=20.2.2=py38_0
+  - pycparser=2.20=pyh9f0ad1d_2
+  - pyopenssl=19.1.0=py_1
+  - pysocks=1.7.1=py38h32f6830_1
+  - python=3.8.5=h5fd99cc_1
+  - python-pptx=0.6.18=py_0
+  - python_abi=3.8=1_cp38
+  - setuptools=49.6.0=py38_0
+  - six=1.15.0=pyh9f0ad1d_0
+  - sqlite=3.33.0=h2a8f88b_0
+  - tk=8.6.10=he774522_0
+  - urllib3=1.25.10=py_0
+  - vc=14.1=h0510ff6_4
+  - vs2015_runtime=14.16.27012=hf0eaf9b_3
+  - wheel=0.35.1=py_0
+  - win_inet_pton=1.1.0=py38_0
+  - wincertstore=0.2=py38_0
+  - xlsxwriter=1.3.3=pyh9f0ad1d_0
+  - xz=5.2.5=h62dcd97_0
+  - zlib=1.2.11=h62dcd97_4
+  - zstd=1.4.4=ha9fde0e_3
+prefix: C:\Users\naked_000\anaconda3\envs\video_out
+
