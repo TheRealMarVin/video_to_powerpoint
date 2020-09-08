@@ -1,6 +1,5 @@
 import math, operator
 
-import pptx
 from PIL import Image
 import sys
 import os
