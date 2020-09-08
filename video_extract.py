@@ -28,14 +28,15 @@ def extract_video_frame(video, out_dir, tmp_folder="decomp"):
     else:
         sys.exit("{} already exists, exit".format(tmp_folder))
 
-    if not os.path.exists(out_dir):
+    if os.path.exists(out_dir):
+        sys.exit("{} already exists, exit".format(out_dir))
+    else:
         os.mkdir(out_dir)
 
     cmd = ["ffmpeg", "-i", video, "-vf", "select='eq(pict_type,I)'", "-vsync", "0", "-f", "image2",
            "{}/%09d.png".format(tmp_folder)]
 
     print(("Running ffmpeg: " + " ".join(cmd)))
-
 
     subprocess.call(cmd)
 
