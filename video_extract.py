@@ -46,7 +46,7 @@ def remove_duplicate_frame(out_dir, tmp_folder="decomp"):
     filelist = glob.glob(os.path.join(tmp_folder, '*.png'))
     filelist.sort()
 
-    for index in range(0, len(filelist)):
+    for index in range(1, len(filelist)):
         if index < len(filelist) - 1:
             if not are_image_same(filelist[index], filelist[index + 1]):
                 _, tail = os.path.split(filelist[index])
