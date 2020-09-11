@@ -9,7 +9,7 @@ import shutil
 from functools import reduce
 
 
-# this was found on some stackoverflow
+# this was found on https://stackoverflow.com/questions/1927660/compare-two-images-the-python-linux-way
 def are_image_same(file1, file2):
     image1 = Image.open(file1)
     image2 = Image.open(file2)
