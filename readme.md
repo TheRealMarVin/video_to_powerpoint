@@ -21,7 +21,6 @@ No more manually taking screenshots or guessing frame numbers. Let the script do
 ## **Features**
 
 - **Frame Extraction:** Automatically extracts frames from any video file.
-- **Customizable Frame Rate:** Choose how many frames per second you want to capture. Because not every moment deserves to be immortalized in PowerPoint glory.
 - **Dynamic Slide Generation:** Each frame gets its very own slide.
 - **Compatible with Any Video Format:** If your media player can play it, we can frame it.
 
@@ -44,10 +43,10 @@ No more manually taking screenshots or guessing frame numbers. Let the script do
 3. **Run the Script:** Provide your video file and customize your preferences:
 
    ```bash
-   python video_to_powerpoint.py --video_path your_video.mp4 --fps 1 --output slides.pptx
+   python video_to_powerpoint.py --video_path your_video.mp4 --output slides.pptx
    ```
 
-   Replace `your_video.mp4` with your video file, set your desired `fps` (frames per second), and give your PowerPoint masterpiece a name.
+   Replace `your_video.mp4` with your video file and give your PowerPoint masterpiece a name.
 
 4. **Admire Your Work:** Open the generated `.pptx` file and bask in your genius.
 
@@ -56,7 +55,6 @@ No more manually taking screenshots or guessing frame numbers. Let the script do
 ## **Arguments Explained**
 
 - `--video_path`: Path to your video file. Mandatory.
-- `--fps`: Frames per second to extract. Defaults to 1 frame per second if you’re indecisive.
 - `--output`: Name for your PowerPoint file. Defaults to `output.pptx` because we like predictable filenames.
 
 ---
