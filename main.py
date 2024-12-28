@@ -1,4 +1,3 @@
-import shutil
 import argparse
 import logging
 from power_point_builder import to_power_point

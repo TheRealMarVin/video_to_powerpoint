@@ -1,7 +1,6 @@
 import math
 import operator
 from PIL import Image
-import sys
 import os
 import glob
 import subprocess
