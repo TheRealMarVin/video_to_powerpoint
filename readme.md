@@ -6,26 +6,6 @@ This was born during the times of endless Zoom classes when teachers decided to 
 
 ---
 
-## **What Does It Do?**
-
-**Video to PowerPoint** takes any video, breaks it down into individual frames, and then neatly packages those frames into a PowerPoint file (.pptx). Imagine:
-
-- Highlighting critical video moments for a presentation
-- Creating time-lapse slideshows
-- Impressing your boss with your tech wizardry
-
-No more manually taking screenshots or guessing frame numbers. Let the script do the heavy lifting while you sip on your coffee (or tea, we’re inclusive here).
-
----
-
-## **Features**
-
-- **Frame Extraction:** Automatically extracts frames from any video file.
-- **Dynamic Slide Generation:** Each frame gets its very own slide.
-- **Compatible with Any Video Format:** If your media player can play it, we can frame it.
-
----
-
 ## **Getting Started**
 
 1. **Clone the Repository:**
@@ -40,22 +20,26 @@ No more manually taking screenshots or guessing frame numbers. Let the script do
    pip install -r requirements.txt
    ```
 
-3. **Run the Script:** Provide your video file and customize your preferences:
+3. **Run the Script:** Provide your video folder and customize your preferences:
 
    ```bash
-   python video_to_powerpoint.py --video_path your_video.mp4 --output slides.pptx
+   python main.py --video_folder videos --output_folder ./out --presentation_folder ./presentation --slide_layout 6 --output_name my_slides.pptx
    ```
 
-   Replace `your_video.mp4` with your video file and give your PowerPoint masterpiece a name.
+   Replace `videos` with your folder containing video files, customize the `output_folder` for extracted frames, set your desired `presentation_folder`, select a `slide_layout`, and specify an optional `output_name` for the PowerPoint presentation.
 
-4. **Admire Your Work:** Open the generated `.pptx` file and bask in your genius.
+4. **Admire Your Work:** Open the generated `.pptx` file in your `presentation_folder` and bask in your genius.
 
 ---
 
 ## **Arguments Explained**
 
-- `--video_path`: Path to your video file. Mandatory.
-- `--output`: Name for your PowerPoint file. Defaults to `output.pptx` because we like predictable filenames.
+- `--video_folder`: Folder containing your video files. Defaults to `videos`.
+- `--output_folder`: Folder for temporary frame extraction. Defaults to `./out`.
+- `--presentation_folder`: Folder to save the final PowerPoint presentations. Defaults to `./presentation`.
+- `--slide_layout`: PowerPoint slide layout to use. Defaults to `6` (blank layout).
+- `--output_name`: Custom name for the output PowerPoint file. If not specified, it defaults to the video file's base name.
+- `--distance_threshold`: Minimum distance (RMS) between frames to consider them unique. Defaults to `5`.
 
 ---
 
@@ -75,8 +59,4 @@ Found a bug? Got a feature request? Want to add a "meme mode"? Fork the repo and
 ## **License**
 
 MIT License. Because sharing is caring.
-
----
-
-Happy Slide-Making! 🎥➡️📽️➡️📑
 
