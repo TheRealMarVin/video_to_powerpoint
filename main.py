@@ -33,6 +33,11 @@ if __name__ == '__main__':
 
     logging.basicConfig(level=logging.INFO)
 
+    if args.start_time and args.end_time and args.end_time < args.start_time:
+        raise ValueError(f"End time ({args.end_time}s) cannot be earlier than start time ({args.start_time}s).")
+    if args.duration and args.duration < 0:
+        raise ValueError(f"Duration ({args.duration}s) cannot be negative.")
+
     videos = get_video_name(args.video_folder)
     for video in videos:
         logging.info(f"Processing video: {video}")

@@ -44,6 +44,12 @@ def construct_ffmpeg_command(video, tmp_folder, frame_type="I", format="png", st
 
 
 def extract_images_for_frame(video, out_dir, start_time=None, end_time=None, duration=None, distance_threshold=5):
+    if start_time is not None and end_time is not None and end_time < start_time:
+        raise ValueError(f"End time ({end_time}s) cannot be earlier than start time ({start_time}s).")
+
+    if duration is not None and duration < 0:
+        raise ValueError(f"Duration ({duration}s) cannot be negative.")
+
     with tempfile.TemporaryDirectory() as tmp_folder:
         cmd = construct_ffmpeg_command(video, tmp_folder, start_time=start_time, end_time=end_time, duration=duration)
         logging.info(f"Running FFmpeg: {' '.join(cmd)}")
@@ -55,7 +61,7 @@ def extract_images_for_frame(video, out_dir, start_time=None, end_time=None, dur
             raise ValueError("No frames found in temporary folder.")
 
         for index in range(len(filelist) - 1):
-            if index == 0 or not are_images_same(filelist[index], filelist[index + 1]):
+            if index == 0 or not are_images_same(filelist[index], filelist[index + 1], distance_threshold):
                 _, tail = os.path.split(filelist[index])
                 shutil.copyfile(filelist[index], os.path.join(out_dir, tail))
 
@@ -63,4 +69,3 @@ def extract_images_for_frame(video, out_dir, start_time=None, end_time=None, dur
         _, tail = os.path.split(filelist[-1])
         shutil.copyfile(filelist[-1], os.path.join(out_dir, tail))
         logging.info("Duplicate frames removed.")
-
