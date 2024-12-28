@@ -23,10 +23,10 @@ This was born during the times of endless Zoom classes when teachers decided to 
 3. **Run the Script:** Provide your video folder and customize your preferences:
 
    ```bash
-   python main.py --video_folder videos --output_folder ./out --presentation_folder ./presentation --slide_layout 6 --output_name my_slides.pptx
+   python main.py --video_folder videos --output_folder ./out --presentation_folder ./presentation --slide_layout 6 --output_name my_slides.pptx --start_time 10 --duration 10
    ```
 
-   Replace `videos` with your folder containing video files, customize the `output_folder` for extracted frames, set your desired `presentation_folder`, select a `slide_layout`, and specify an optional `output_name` for the PowerPoint presentation.
+   Replace `videos` with your folder containing video files, customize the `output_folder` for extracted frames, set your desired `presentation_folder`, select a `slide_layout`, specify an optional `output_name` for the PowerPoint presentation, and define the `--start_time` and `--duration` if needed.
 
 4. **Admire Your Work:** Open the generated `.pptx` file in your `presentation_folder` and bask in your genius.
 
@@ -40,13 +40,9 @@ This was born during the times of endless Zoom classes when teachers decided to 
 - `--slide_layout`: PowerPoint slide layout to use. Defaults to `6` (blank layout).
 - `--output_name`: Custom name for the output PowerPoint file. If not specified, it defaults to the video file's base name.
 - `--distance_threshold`: Minimum distance (RMS) between frames to consider them unique. Defaults to `5`.
-
----
-
-## **Planned Features**
-
-- **Filters:** Choose specific time ranges or frames to include.
-- **Themes:** Apply PowerPoint slide templates for aesthetic brilliance.
+- `--start_time`: Start time in seconds to begin capturing frames. Optional.
+- `--end_time`: End time in seconds to stop capturing frames. Optional.
+- `--duration`: Duration in seconds to capture frames after start_time. Optional.
 
 ---
 
@@ -60,3 +56,6 @@ Found a bug? Got a feature request? Want to add a "meme mode"? Fork the repo and
 
 MIT License. Because sharing is caring.
 
+---
+
+Happy Slide-Making! 🎥➡️📽️➡️📑
