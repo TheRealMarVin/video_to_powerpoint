@@ -23,6 +23,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--video_folder", default="videos", help="Folder containing videos")
     parser.add_argument("--output_folder", default="./out", help="Output folder for frames")
+    parser.add_argument("--distance_threshold", default=5, help="Minimum distance between two slides")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO)
@@ -32,7 +33,7 @@ if __name__ == '__main__':
         logging.info(f"Processing video: {video}")
         try:
             with tempfile.TemporaryDirectory() as out_dir:
-                extract_images_for_frame(video, out_dir)
+                extract_images_for_frame(video, out_dir, args.distance_threshold)
                 base_name = path_leaf(video)
                 to_power_point(out_dir, base_name)
                 logging.info(f"Successfully processed {video}")

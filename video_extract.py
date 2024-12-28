@@ -14,11 +14,11 @@ logging.basicConfig(level=logging.INFO)
 
 
 # this was found on https://stackoverflow.com/questions/1927660/compare-two-images-the-python-linux-way
-def are_images_same(file1, file2):
+def are_images_same(file1, file2, threshold=5):
     h1 = Image.open(file1).histogram()
     h2 = Image.open(file2).histogram()
     rms = math.sqrt(reduce(operator.add, map(lambda a, b: (a - b) ** 2, h1, h2)) / len(h1))
-    return rms < 1  # Consider images the same if RMS is very low
+    return rms < threshold  # Consider images the same if RMS is very low
 
 
 def construct_ffmpeg_command(video, tmp_folder, frame_type="I", format="png"):
@@ -28,7 +28,7 @@ def construct_ffmpeg_command(video, tmp_folder, frame_type="I", format="png"):
     ]
 
 
-def extract_images_for_frame(video, out_dir):
+def extract_images_for_frame(video, out_dir, distance_threshold):
     with tempfile.TemporaryDirectory() as tmp_folder:
         cmd = construct_ffmpeg_command(video, tmp_folder)
         logging.info(f"Running FFmpeg: {' '.join(cmd)}")
@@ -40,7 +40,7 @@ def extract_images_for_frame(video, out_dir):
             raise ValueError("No frames found in temporary folder.")
 
         for index in range(len(filelist) - 1):
-            if not are_images_same(filelist[index], filelist[index + 1]):
+            if not are_images_same(filelist[index], filelist[index + 1], distance_threshold):
                 _, tail = os.path.split(filelist[index])
                 shutil.copyfile(filelist[index], os.path.join(out_dir, tail))
 
