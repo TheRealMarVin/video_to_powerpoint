@@ -25,6 +25,9 @@ if __name__ == '__main__':
     parser.add_argument("--presentation_folder", default="./presentation/", help="Folder to save PowerPoint presentations")
     parser.add_argument("--slide_layout", type=int, default=6, help="Slide layout to use for the presentation")
     parser.add_argument("--output_name", default=None, help="Custom name for the output PowerPoint file")
+    parser.add_argument("--start_time", type=float, help="Start time in seconds to begin capturing frames")
+    parser.add_argument("--end_time", type=float, help="End time in seconds to stop capturing frames")
+    parser.add_argument("--duration", type=float, help="Duration in seconds to capture frames after start_time")
     parser.add_argument("--distance_threshold", default=5, help="Minimum distance between two slides")
     args = parser.parse_args()
 
@@ -35,7 +38,7 @@ if __name__ == '__main__':
         logging.info(f"Processing video: {video}")
         try:
             with tempfile.TemporaryDirectory() as out_dir:
-                extract_images_for_frame(video, out_dir, args.distance_threshold)
+                extract_images_for_frame(video, out_dir, start_time=args.start_time, end_time=args.end_time, duration=args.duration, distance_threshold=args.distance_threshold)
                 base_name = path_leaf(video)
                 to_power_point(out_dir, base_name, export_folder=args.presentation_folder, slide_layout=args.slide_layout, output_name=args.output_name)
                 logging.info(f"Successfully processed {video}")
