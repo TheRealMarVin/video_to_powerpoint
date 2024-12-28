@@ -1,5 +1,5 @@
-import math, operator
-
+import math
+import operator
 from PIL import Image
 import sys
 import os
@@ -7,56 +7,44 @@ import glob
 import subprocess
 import shutil
 from functools import reduce
+import tempfile
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 
 # this was found on https://stackoverflow.com/questions/1927660/compare-two-images-the-python-linux-way
-def are_image_same(file1, file2):
-    image1 = Image.open(file1)
-    image2 = Image.open(file2)
-
-    h1 = image1.histogram()
-    h2 = image2.histogram()
-    rms = math.sqrt(reduce(operator.add, list(map(lambda a,b: (a-b)**2, h1, h2)))/len(h1))
-
-    return rms == 0
+def are_images_same(file1, file2):
+    h1 = Image.open(file1).histogram()
+    h2 = Image.open(file2).histogram()
+    rms = math.sqrt(reduce(operator.add, map(lambda a, b: (a - b) ** 2, h1, h2)) / len(h1))
+    return rms < 1  # Consider images the same if RMS is very low
 
 
-def extract_video_frame(video, out_dir, tmp_folder="decomp"):
-    if not os.path.exists(tmp_folder):
-        os.mkdir(tmp_folder)
-    else:
-        sys.exit("{} already exists, exit".format(tmp_folder))
-
-    if os.path.exists(out_dir):
-        sys.exit("{} already exists, exit".format(out_dir))
-    else:
-        os.mkdir(out_dir)
-
-    cmd = ["ffmpeg", "-i", video, "-vf", "select='eq(pict_type,I)'", "-vsync", "0", "-f", "image2",
-           "{}/%09d.png".format(tmp_folder)]
-
-    print(("Running ffmpeg: " + " ".join(cmd)))
-
-    subprocess.call(cmd)
-
-    print("Done, now eliminating duplicate images and moving unique ones to output folder...")
+def construct_ffmpeg_command(video, tmp_folder, frame_type="I", format="png"):
+    return [
+        "ffmpeg", "-i", video, "-vf", f"select='eq(pict_type,{frame_type})'",
+        "-vsync", "0", "-f", f"image2", f"{tmp_folder}/%09d.{format}"
+    ]
 
 
-def remove_duplicate_frame(out_dir, tmp_folder="decomp"):
-    filelist = glob.glob(os.path.join(tmp_folder, '*.png'))
-    filelist.sort()
+def extract_images_for_frame(video, out_dir):
+    with tempfile.TemporaryDirectory() as tmp_folder:
+        cmd = construct_ffmpeg_command(video, tmp_folder)
+        logging.info(f"Running FFmpeg: {' '.join(cmd)}")
+        subprocess.run(cmd, check=True)
+        logging.info("Frame extraction completed.")
 
-    for index in range(1, len(filelist)):
-        if index < len(filelist) - 1:
-            if not are_image_same(filelist[index], filelist[index + 1]):
+        filelist = sorted(glob.glob(os.path.join(tmp_folder, '*.png')))
+        if not filelist:
+            raise ValueError("No frames found in temporary folder.")
+
+        for index in range(len(filelist) - 1):
+            if not are_images_same(filelist[index], filelist[index + 1]):
                 _, tail = os.path.split(filelist[index])
-                shutil.copyfile(filelist[index], out_dir + os.path.sep + tail)
-        else:
-            shutil.copyfile(filelist[index], out_dir + os.path.sep + tail)
+                shutil.copyfile(filelist[index], os.path.join(out_dir, tail))
 
-    shutil.rmtree(tmp_folder)
-
-
-def extract_images_for_frame(video, out_dir, tmp_folder="decomp"):
-    extract_video_frame(video, out_dir, tmp_folder)
-    remove_duplicate_frame(out_dir, tmp_folder)
+        # Always copy the last frame
+        _, tail = os.path.split(filelist[-1])
+        shutil.copyfile(filelist[-1], os.path.join(out_dir, tail))
+        logging.info("Duplicate frames removed.")

@@ -1,22 +1,28 @@
-import pptx
 import os
 import glob
-
 from pptx import Presentation
+import logging
 
+def to_power_point(img_folder, base_name, export_folder="./presentation/", slide_layout=6, output_name=None):
+    if not os.path.exists(img_folder):
+        raise FileNotFoundError(f"Image folder not found: {img_folder}")
 
-def to_power_point(img_folder, base_name, export_folder="./presentation/"):
+    filelist = sorted(glob.glob(os.path.join(img_folder, '*.png')))
+    if not filelist:
+        raise ValueError(f"No PNG files found in {img_folder}")
+
     if not os.path.exists(export_folder):
-        os.mkdir(export_folder)
+        os.makedirs(export_folder)
 
+    logging.basicConfig(level=logging.INFO)
     prs = Presentation()
 
-    filelist = glob.glob(os.path.join(img_folder, '*.png'))
-    filelist.sort()
     for file in filelist:
-        title_slide_layout = prs.slide_layouts[6] # 6 is blank
-        slide = prs.slides.add_slide(title_slide_layout)
-        width = pptx.util.Cm(33.86)
-        slide.shapes.add_picture(file, 0, 0, width=width)
+        logging.info(f"Adding image {file} to slide")
+        slide = prs.slides.add_slide(prs.slide_layouts[slide_layout])
+        slide_width = prs.slide_width
+        slide.shapes.add_picture(file, 0, 0, width=slide_width)
 
-    prs.save('{}{}.pptx'.format(export_folder, base_name))
+    output_name = output_name or f"{base_name}.pptx"
+    prs.save(os.path.join(export_folder, output_name))
+    logging.info(f"Presentation saved at {os.path.join(export_folder, output_name)}")
