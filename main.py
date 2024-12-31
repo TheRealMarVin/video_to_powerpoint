@@ -1,3 +1,8 @@
+"""
+This script processes video files to extract frames, removes duplicates, and generates PowerPoint presentations
+based on the unique frames. It supports customization such as slide layout, output file naming, and frame extraction settings.
+"""
+
 import argparse
 import logging
 from power_point_builder import to_power_point
@@ -7,6 +12,15 @@ import glob
 import tempfile
 
 def get_video_name(video_folder):
+    """
+    Retrieve a list of video file paths from the specified folder.
+
+    Args:
+        video_folder (str): Path to the folder containing video files.
+
+    Returns:
+        list: A list of paths to video files with supported formats.
+    """
     supported_formats = ('*.mp4', '*.avi', '*.mkv')
     filelist = []
     for ext in supported_formats:
@@ -14,11 +28,23 @@ def get_video_name(video_folder):
     return filelist
 
 def path_leaf(path):
+    """
+    Extract the base name of a file from its path, without the extension.
+
+    Args:
+        path (str): Full file path.
+
+    Returns:
+        str: Base name of the file without its extension.
+    """
     _, tail = os.path.split(path)
     base_name, _ = os.path.splitext(tail)
     return base_name
 
 if __name__ == '__main__':
+    """
+    Main entry point for the script. Parses command-line arguments, processes videos, and generates presentations.
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument("--video_folder", default="videos", help="Folder containing videos")
     parser.add_argument("--output_folder", default="./out", help="Output folder for frames")
